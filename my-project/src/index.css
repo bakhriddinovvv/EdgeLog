@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --color-brand: #f78a1d;
+  --color-brand-dark: #e07508;
+
+  --color-ink-950: #050505;
+  --color-ink-900: #0a0a0a;
+  --color-ink-800: #141414;
+  --color-ink-700: #1c1c1c;
+  --color-ink-600: #2a2a2a;
+  --color-fg: #ffffff;
+}
+
+html {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+  --color-ink-950: #f4f4f5;
+  --color-ink-900: #ffffff;
+  --color-ink-800: #ffffff;
+  --color-ink-700: #e4e4e7;
+  --color-ink-600: #d4d4d8;
+  --color-fg: #0a0a0a;
+}
+
+/* To'q sariq tugmalarda yozuv doim oq */
+html.light .bg-brand {
+  color: #fff;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  a {
+    cursor: pointer;
+  }
+}
