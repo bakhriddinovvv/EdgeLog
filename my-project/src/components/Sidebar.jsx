@@ -1,6 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import {
-  LayoutDashboard, CircleCheckBig, ChartColumn, Award, ShoppingCart, NotebookPen, LogOut,
+  LayoutDashboard, CircleCheckBig, ChartColumn, Target, Award, ShoppingCart, NotebookPen, LogOut,
 } from "lucide-react";
 import { FaDiscord, FaFacebookF, FaXTwitter, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { useApp } from "../context/AppContext";
@@ -10,6 +10,7 @@ const menu = [
   { to: "/", key: "dashboard", icon: LayoutDashboard, end: true },
   { to: "/results", key: "results", icon: CircleCheckBig },
   { to: "/analytics", key: "analytics", icon: ChartColumn },
+  { to: "/rr-lab", key: "rrLab", icon: Target },
   { to: "/certificates", key: "certificates", icon: Award },
   { to: "/purchases", key: "purchases", icon: ShoppingCart },
   { to: "/notes", key: "notes", icon: NotebookPen },

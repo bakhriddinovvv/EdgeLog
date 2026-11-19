@@ -6,6 +6,7 @@ const titleKeys = {
   "/": "dashboard",
   "/results": "results",
   "/analytics": "analytics",
+  "/rr-lab": "rrLab",
   "/certificates": "certificates",
   "/purchases": "purchases",
   "/notes": "notes",

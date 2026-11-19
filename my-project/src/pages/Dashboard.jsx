@@ -36,6 +36,8 @@ export default function Dashboard() {
   const [uploading, setUploading] = useState(false);
   const [zoom, setZoom] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [slRRTrade, setSlRRTrade] = useState(null);
+  const [slRRValue, setSlRRValue] = useState("");
 
   // Modal ichida natija o'zgarsa darrov yangilanishi uchun id bo'yicha qayta topamiz
   const selected = trades.find((tr) => tr.id === selectedId) ?? null;
@@ -101,10 +103,31 @@ export default function Dashboard() {
 
   // Natijani (open/tp/sl) o'zgartirish parol talab qiladi
   const changeResult = (tr, result) => {
-    if (tr.result === result) return;
+    if (tr.result === result && (result !== "sl" || tr.maxRR != null)) return;
+    if (result === "sl") {
+      setSlRRTrade(tr);
+      setSlRRValue(tr.maxRR == null ? "" : String(tr.maxRR));
+      return;
+    }
     ask(t("passwordChangeMsg"), () =>
-      setTrades((prev) => prev.map((x) => (x.id === tr.id ? { ...x, result } : x)))
+      setTrades((prev) => prev.map((x) => (x.id === tr.id ? { ...x, result, maxRR: null } : x)))
     );
+  };
+
+  const saveSLResult = () => {
+    const maxRR = Number(slRRValue);
+    if (slRRValue.trim() === "" || !Number.isFinite(maxRR) || maxRR < 0) {
+      alert(t("rrInvalid"));
+      return;
+    }
+    const trade = slRRTrade;
+    ask(t("passwordChangeMsg"), () => {
+      setTrades((prev) => prev.map((x) =>
+        x.id === trade.id ? { ...x, result: "sl", maxRR: Math.round(maxRR * 100) / 100 } : x
+      ));
+      setSlRRTrade(null);
+      setSlRRValue("");
+    });
   };
 
   // O'chirish ham parol talab qiladi
@@ -347,6 +370,7 @@ export default function Dashboard() {
                     ["SL", selected.sl ?? "-"],
                     ["TP", selected.tp ?? "-"],
                     ["RR", `1:${selected.rr}`],
+                    ...(selected.result === "sl" && selected.maxRR != null ? [[t("maxReachedRR"), `${selected.maxRR}R`]] : []),
                     [t("riskLabel"), `${selected.risk}%`],
                   ].map(([label, value]) => (
                     <div key={label} className="rounded-xl border border-ink-700 bg-ink-900 px-3 py-2.5">
@@ -389,6 +413,40 @@ export default function Dashboard() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {slRRTrade && (
+        <div className="fixed inset-0 z-[60] grid place-items-center bg-black/75 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 p-6 shadow-2xl">
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-brand">RR Lab</p>
+                <h3 className="mt-1 text-xl font-bold">{t("slReachedTitle")}</h3>
+                <p className="mt-1 text-sm text-neutral-400">{slRRTrade.pair} · {slRRTrade.direction} · {slRRTrade.date}</p>
+              </div>
+              <button onClick={() => setSlRRTrade(null)} className="rounded-lg p-2 text-neutral-400 hover:bg-ink-700 hover:text-fg" aria-label={t("close")}><X size={18} /></button>
+            </div>
+            <label className="mb-2 block text-sm font-medium">{t("maxReachedRR")}</label>
+            <div className="relative">
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={slRRValue}
+                onChange={(e) => setSlRRValue(e.target.value)}
+                placeholder="Masalan: 1.2"
+                autoFocus
+                className="h-12 w-full rounded-xl border border-ink-600 bg-ink-900 px-4 pr-12 text-lg font-semibold outline-none focus:border-brand"
+              />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-neutral-500">R</span>
+            </div>
+            <p className="mt-2 text-xs leading-5 text-neutral-500">{t("slReachedHint")}</p>
+            <div className="mt-6 flex gap-2">
+              <button onClick={() => setSlRRTrade(null)} className="h-11 flex-1 rounded-xl border border-ink-600 text-sm font-semibold text-neutral-300 hover:bg-ink-700">{t("cancel")}</button>
+              <button onClick={saveSLResult} className="h-11 flex-1 rounded-xl bg-brand text-sm font-bold text-white transition hover:bg-brand-dark">{t("saveSL")}</button>
             </div>
           </div>
         </div>

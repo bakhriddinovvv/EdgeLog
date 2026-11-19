@@ -3,6 +3,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Results from "./pages/Results";
 import Analytics from "./pages/Analytics";
+import RRLab from "./pages/RRLab";
 import Certificates from "./pages/Certificates";
 import Purchases from "./pages/Purchases";
 import Notes from "./pages/Notes";
@@ -21,6 +22,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="results" element={<Results />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="rr-lab" element={<RRLab />} />
             <Route path="certificates" element={<Certificates />} />
             <Route path="purchases" element={<Purchases />} />
             <Route path="notes" element={<Notes />} />
