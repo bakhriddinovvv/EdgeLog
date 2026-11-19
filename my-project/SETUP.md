@@ -57,4 +57,4 @@ avtomatik ko'chiriladi. Keyingi akkauntlar bo'sh boshlanadi.
 - Trade o'chirilganda uning rasmi Storage'da qolib ketadi.
 - Bir vaqtda ikki qurilmadan tahrirlasangiz, oxirgi saqlagan yutadi (har bir ro'yxat butunicha yoziladi).
 - Parolni tiklash ("Parolni unutdim") hali qo'shilmagan.
-- Tahrirlash/o'chirish paroli (`22FSskdj@`) hamon faqat interfeys himoyasi. Haqiqiy himoya Supabase login va RLS'da.
+- Tahrirlash/o'chirish paroli (`22`) hamon faqat interfeys himoyasi. Haqiqiy himoya Supabase login va RLS'da.
